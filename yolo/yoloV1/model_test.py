@@ -5,7 +5,7 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import test
 from tensorflow.python.keras import combinations
-import model
+from . import model
 
 
 @combinations.generate(combinations.combine(mode=["eager", "graph"]))
