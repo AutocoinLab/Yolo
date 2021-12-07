@@ -4,34 +4,29 @@ import tensorflow as tf
 def leaky_relu(features, alpha=0.1):
     return tf.where(features<0, alpha * features, features)
 
+def MaxPool():
+    return tf.keras.layers.MaxPool2D(pool_size=(2, 2), strides=(2, 2), padding='SAME')
 
-def block1():
-    
-    return tf.keras.Sequential([tf.keras.layers.Conv2D(filters=64, 
-                                                       kernel_size=(7,7),
-                                                       strides=(2,2),
-                                                       padding='SAME',
-                                                       activation=leaky_relu),
-
-                                tf.keras.layers.MaxPool2D(pool_size=(2, 2), 
-                                                          strides=(2, 2), 
-                                                          padding='SAME')])
+def Conv(filters, kernel_size, strides=(1, 1)):
+    return tf.keras.layers.Conv2D(filters=filters, 
+                                kernel_size=kernel_size,
+                                strides=strides,
+                                padding='SAME',
+                                activation=leaky_relu)
 
 
-def block2():
-    
-    return tf.keras.Sequential([tf.keras.layers.Conv2D(filters=192, 
-                                                       kernel_size=(3, 3),
-                                                       padding='SAME',
-                                                       activation=leaky_relu),
+def block1(filters=64, 
+            kernel_size=(7,7),
+            strides=(2,2)):
 
-                                tf.keras.layers.MaxPool2D(pool_size=(2, 2), 
-                                                          strides=(2, 2), 
-                                                          padding='SAME')])
+    return tf.keras.Sequential([Conv(filters=filters, 
+                                    kernel_size=kernel_size,
+                                    strides=strides,),
+
+                                MaxPool()])
 
 
 def block3():
-    
     return tf.keras.Sequential([tf.keras.layers.Conv2D(filters=128, 
                                                        kernel_size=(1, 1),
                                                        padding='SAME',
@@ -52,25 +47,23 @@ def block3():
                                                         padding='SAME',
                                                         activation=leaky_relu),
 
-                                tf.keras.layers.MaxPool2D(pool_size=(2, 2), 
-                                                            strides=(2, 2), 
-                                                            padding='SAME')])
+                                ])
 
                 
 def block4(self):
 
-    layers1 = [tf.keras.layers.Conv2D(filters=256, 
+    layers1 = [Conv(filters=256, 
                                      kernel_size=(1, 1),
                                      padding='SAME',
                                      activation=leaky_relu),
 
-              tf.keras.layers.Conv2D(filters=512, 
+              Conv(filters=512, 
                                      kernel_size=(3, 3),
                                      padding='SAME',
                                      activation=leaky_relu),] * 4
 
 
-    layers2 = [tf.keras.layers.Conv2D(filters=512, 
+    layers2 = [Conv(filters=512, 
                                       kernel_size=(1, 1),
                                       padding='SAME',
                                       activation=leaky_relu),
@@ -80,9 +73,7 @@ def block4(self):
                                       padding='SAME',
                                       activation=leaky_relu),
 
-               tf.keras.layers.MaxPool2D(pool_size=(2, 2), 
-                                strides=(2, 2), 
-                                padding='SAME')]
+               MaxPool()]
 
     
     return tf.keras.Sequential(layers1 + layers2)
